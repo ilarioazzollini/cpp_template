@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // C++ debugging
+        {
+            "name": "Debug App",
+            "type": "cppdbg",
+            "request": "launch",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "Build app in debug",
+            "program": "${workspaceFolder}/build_gnu_debug/cpp_ws/my_project_name_app/my_project_name_my_project_name_app",
+            "args": [],
+            "cwd": "${workspaceFolder}/build_gnu_debug/cpp_ws",
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Clear debuginfod URLs to disable the debuginfod client, which suppresses gdb's 'Failed to set controlling terminal' warning in the container (no external debug symbols are fetched)",
+                    "text": "set debuginfod urls",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

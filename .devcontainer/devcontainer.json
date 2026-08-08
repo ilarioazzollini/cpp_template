@@ -1,0 +1,40 @@
+{
+    "name": "my_project_name-Dev"
+    "image": "my_project_name-dev:latest",
+    "privileged": true,
+    "runArgs": [
+        "--rm",
+        "--network=host"
+    ],
+    "remoteUser": "root",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/root/my_project_name,type=bind",
+    "workspaceFolder": "/root/my_project_name",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "llvm-vs-code-extensions.vscode-clangd",
+                "xaver.clang-format",
+                "ms-vscode.cmake-tools",
+                "usernamehw.errorlens",
+                "vscode-icons-team.vscode-icons",
+                "matepek.vscode-catch2-test-adapter",
+                "cschlosser.doxdocgen",
+                "ms-vscode.cpptools"
+            ],
+            "settings": {
+                "editor.defaultFormatter": "xaver.clang-format",
+                "editor.formatOnSave": true,
+                "cmake.sourceDirectory": "${workspaceFolder}",
+                "clangd.path": "/usr/bin/clangd",
+                "clangd.arguments": [
+                    "--fallback-style=none",
+                    "--background-index",
+                    "--query-driver=/usr/bin/g++",
+                    "--header-insertion=never"
+                ],
+                "clang-format.executable": "/usr/bin/clang-format",
+                "C_Cpp.intelliSenseEngine": "disabled"
+            }
+        }
+    }
+}

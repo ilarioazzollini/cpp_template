@@ -1,0 +1,4 @@
+build_gnu_*
+install_gnu_*
+compile_commands.json
+.cache/

@@ -1,0 +1,2 @@
+add_subdirectory(my_project_name_lib)
+add_subdirectory(my_project_name_app)

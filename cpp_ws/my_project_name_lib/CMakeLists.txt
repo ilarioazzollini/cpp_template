@@ -1,0 +1,28 @@
+set(LIBRARY_NAME my_project_name_lib)
+
+list(APPEND CMAKE_MESSAGE_CONTEXT ${LIBRARY_NAME})
+
+add_library(${LIBRARY_NAME})
+
+target_compile_features(${LIBRARY_NAME} PUBLIC cxx_std_23)
+
+#HEADER FILES
+file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${LIBRARY_NAME}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${LIBRARY_NAME}/*.hpp
+)
+
+# CPP FILES
+file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+)
+
+target_sources(${LIBRARY_NAME}
+    PRIVATE
+        ${CPP_FILES}
+    PUBLIC FILE_SET HEADERS
+        BASE_DIRS include
+        FILES ${HEADER_FILES}
+)
+
+add_library(${PROJECT_NAME}::${LIBRARY_NAME} ALIAS ${LIBRARY_NAME})
