@@ -1,0 +1,7 @@
+title: my_project_name
+description: Documentation for my_project_name.
+# Generated API pages go under docs/api (git-ignored). docs/index.md and the
+# theme assets under docs/ are committed.
+output: docs/api
+files:
+  - "cpp_ws/**/*.hpp"

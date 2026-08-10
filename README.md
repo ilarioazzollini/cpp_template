@@ -20,6 +20,23 @@ docker run -it --rm --network=host --privileged -v .:/root/my_project_name -w /r
 bash -e /root/my_project_name/scripts/clean_build_install_test_release.sh
 ```
 
+## API documentation
+
+API docs are generated from the library headers with
+[doxide](https://doxide.org) and rendered with
+[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+
+```bash
+bash -e /root/my_project_name/scripts/build_docs.sh
+```
+
+To preview with live reload, serve them (the container is run with
+`--network=host`, so the site is reachable from the host):
+
+```bash
+mkdocs serve -a 0.0.0.0:8000
+```
+
 ## Using VSCode
 
 Needed extensions on the host PC:

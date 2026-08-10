@@ -1,0 +1,24 @@
+site_name: my_project_name
+site_description: Documentation for my_project_name.
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  features:
+    - navigation.indexes
+
+markdown_extensions:
+  - def_list
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+
+extra_css:
+  - stylesheets/doxide.css
