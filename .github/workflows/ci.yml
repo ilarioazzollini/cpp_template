@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      # Reused prefix: run each gate inside the project's dev image, with the
+      # checked-out repo mounted where the container expects it. The toolchain
+      # (compilers, clang tooling, doxide, MkDocs, gcovr) is baked into the
+      # image, so CI matches local development; build artifacts persist in the
+      # mounted workspace between gates.
+      RUN: >-
+        docker run --rm
+        -v ${{ github.workspace }}:/root/my_project_name
+        -w /root/my_project_name
+        my_project_name-dev:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build dev image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          tags: my_project_name-dev:latest
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Format
+        run: >-
+          $RUN bash -c 'clang-format --dry-run --Werror
+          $(find cpp_ws -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "*.h" \))'
+
+      - name: Build
+        run: >-
+          $RUN bash -c 'cmake -S . -B build_gnu_release -G Ninja
+          -D CMAKE_BUILD_TYPE=Release -D BUILD_TESTING=ON
+          && cmake --build build_gnu_release'
+
+      - name: Lint
+        run: >-
+          $RUN bash -c 'clang-tidy -p build_gnu_release --warnings-as-errors="*"
+          $(find cpp_ws -type f -name "*.cpp")'
+
+      - name: Test
+        run: $RUN ctest --test-dir build_gnu_release --output-on-failure
+
+      - name: Coverage
+        run: >-
+          $RUN bash -c 'cmake -S . -B build_gnu_coverage -G Ninja
+          -D CMAKE_BUILD_TYPE=Debug -D BUILD_TESTING=ON
+          -D CMAKE_CXX_FLAGS="--coverage -O0 -g"
+          -D CMAKE_EXE_LINKER_FLAGS="--coverage"
+          && cmake --build build_gnu_coverage
+          && ctest --test-dir build_gnu_coverage --output-on-failure
+          && gcovr --root . --filter "cpp_ws/my_project_name_lib/"
+          --fail-under-line 80 --print-summary'
+
+      - name: Docs
+        run: $RUN bash -c 'doxide build && mkdocs build --strict'

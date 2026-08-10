@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -q -y \
     clang-tidy \
     gdb \
     ninja-build \
+    gcovr \
     && rm -rf /var/lib/apt/lists/*
 
 # --- Documentation toolchain -------------------------------------------------
