@@ -1,6 +1,8 @@
 # cpp_template
 
-Template repository for C++ projects. After you create a new repository using this one as template, search and replace all "my_project_name" with the desired name.
+Template repository for C++ projects. After you create a new repository using
+this one as template, search and replace all "my_project_name" with the desired
+name.
 
 ## Build the Docker container image
 
@@ -18,6 +20,15 @@ docker run -it --rm --network=host --privileged -v .:/root/my_project_name -w /r
 
 ```bash
 bash -e /root/my_project_name/scripts/clean_build_install_test_release.sh
+```
+
+## Coverage
+
+Do a clean instrumented build, run the tests and produce an HTML report. Fails
+if line coverage falls below 80% (the threshold enforced in CI).
+
+```bash
+bash -e /root/my_project_name/scripts/coverage.sh
 ```
 
 ## API documentation
